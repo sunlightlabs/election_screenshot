@@ -24,15 +24,21 @@ class ElectionUrl(models.Model):
     def take_screenshot(self):
         local_timezone = pytz.timezone(settings.TIME_ZONE)
 
-        new_url = screenshot_url(self.url)
-        if new_url is not None:
+        screenshot_info = screenshot_url(self.url)
+        if screenshot_info is not None:
+            (image_sha1, image_url) = screenshot_info
             screenshot = ElectionScreenshot(election_url=self,
                                             timestamp=pytz.datetime.datetime.now(tz=local_timezone),
-                                            image_url=new_url)
+                                            image_url=image_url,
+                                            image_sha1=image_sha1)
             screenshot.save()
-        return new_url
+            return screenshot
+        else:
+            return None
 
 class ElectionScreenshot(models.Model):
     election_url = models.ForeignKey(ElectionUrl, related_name='screenshots')
     timestamp = models.DateTimeField()
     image_url = models.URLField(help_text="URL of S3 image")
+    image_sha1 = models.CharField(max_length=40, null=True, blank=True)
+

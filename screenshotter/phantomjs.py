@@ -117,8 +117,11 @@ def screenshot_url(url):
             (stdout, stderr) = run_subprocess_safely(cmd,
                                                      timeout=30,
                                                      timeout_signal=15)
+            with file(fil.name) as fil_ro:
+                bytes = fil_ro.read()
+                image_sha1 = hashlib.sha1(bytes).hexdigest()
             new_url = upload_image(fil.name, filename, 'image/png')
-            return new_url
+            return (image_sha1, new_url)
         except PhantomJSTimeout as e:
             log.warning(u"PhantomJS timed out on {0}: {1}".format(url, unicode(e)))
             return None

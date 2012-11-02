@@ -121,6 +121,7 @@ def screenshot_url(url):
             return new_url
         except PhantomJSTimeout as e:
             log.warning(u"PhantomJS timed out on {0}: {1}".format(url, unicode(e)))
+            return None
 
 def upload_image(tmp_path, dest_filename, content_type):
     bucket_name = settings.AWS_BUCKET_NAME

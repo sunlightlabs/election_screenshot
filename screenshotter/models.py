@@ -25,10 +25,12 @@ class ElectionUrl(models.Model):
         local_timezone = pytz.timezone(settings.TIME_ZONE)
 
         new_url = screenshot_url(self.url)
-        screenshot = ElectionScreenshot(election_url=self,
-                                        timestamp=pytz.datetime.datetime.now(tz=local_timezone),
-                                        image_url=new_url)
-        screenshot.save()
+        if new_url is not None:
+            screenshot = ElectionScreenshot(election_url=self,
+                                            timestamp=pytz.datetime.datetime.now(tz=local_timezone),
+                                            image_url=new_url)
+            screenshot.save()
+        return new_url
 
 class ElectionScreenshot(models.Model):
     election_url = models.ForeignKey(ElectionUrl, related_name='screenshots')

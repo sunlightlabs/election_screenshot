@@ -2,6 +2,7 @@ import pytz
 import hashlib
 from django.db import models
 from phantomjs import screenshot_url
+from django.conf import settings
 
 
 class ElectionUrl(models.Model):
@@ -21,9 +22,11 @@ class ElectionUrl(models.Model):
         return u"{0.state} {0.url}".format(self)
 
     def take_screenshot(self):
+        local_timezone = pytz.timezone(settings.TIME_ZONE)
+
         new_url = screenshot_url(self.url)
         screenshot = ElectionScreenshot(election_url=self,
-                                        timestamp=pytz.datetime.datetime.now(),
+                                        timestamp=pytz.datetime.datetime.now(tz=local_timezone),
                                         image_url=new_url)
         screenshot.save()
 

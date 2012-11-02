@@ -106,17 +106,21 @@ def run_subprocess_safely(args, timeout=300, timeout_signal=9):
 
 
 def screenshot_url(url):
-    now = pytz.datetime.datetime.now().isoformat()
+    local_timezone = pytz.timezone(settings.TIME_ZONE)
+    now = pytz.datetime.datetime.now(tz=local_timezone).isoformat()
     sha1 = hashlib.sha1(url).hexdigest()
     filename = "{hash}/{hash}_{timestamp}.png".format(hash=sha1, timestamp=now)
 
     with NamedTemporaryFile(mode='wb', prefix='twoops', suffix='.png', delete=True) as fil:
-        cmd = ["phantomjs", "rasterize.js", url, fil.name]
-        (stdout, stderr) = run_subprocess_safely(cmd,
-                                                 timeout=30,
-                                                 timeout_signal=15)
-        new_url = upload_image(fil.name, filename, 'image/png')
-        return new_url
+        try:
+            cmd = ["phantomjs", "rasterize.js", url, fil.name]
+            (stdout, stderr) = run_subprocess_safely(cmd,
+                                                     timeout=30,
+                                                     timeout_signal=15)
+            new_url = upload_image(fil.name, filename, 'image/png')
+            return new_url
+        except PhantomJSTimeout as e:
+            log.warning(u"PhantomJS timed out on {0}: {1}".format(url, unicode(e)))
 
 def upload_image(tmp_path, dest_filename, content_type):
     bucket_name = settings.AWS_BUCKET_NAME

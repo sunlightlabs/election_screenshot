@@ -4,7 +4,7 @@ import time
 import threading
 import re
 import subprocess
-import datetime
+import pytz
 import hashlib
 from tempfile import NamedTemporaryFile
 
@@ -106,7 +106,7 @@ def run_subprocess_safely(args, timeout=300, timeout_signal=9):
 
 
 def screenshot_url(url):
-    now = datetime.datetime.now().isoformat()
+    now = pytz.datetime.datetime.now().isoformat()
     sha1 = hashlib.sha1(url).hexdigest()
     filename = "{hash}/{hash}_{timestamp}.png".format(hash=sha1, timestamp=now)
 

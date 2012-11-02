@@ -1,15 +1,16 @@
 // OverallTimeout prevents the script from running forever.
-var OverallTimeout = 15 * 1000;
+var OverallTimeout = 10 * 1000;
 
 // RenderDelayTimeout allows for redirects. Half a second should
 // be sufficient. Two seconds is super-safe.
-var RenderDelayTimeout = 2 * 1000;
+var RenderDelayTimeout = 0.75 * 1000;
 
 // How long to delay before attempted to render again
 // if the last-scheduled rendering fails.
-var RenderRetryDelayTimeout = 2 * 1000;
+var RenderRetryDelayTimeout = 1.5 * 1000;
 
-// Output image size
+// Window size for page rendering. The screenshot will be of
+// the entire page, so the height doesn't really matter.
 var WindowWidth = 1280;
 var WindowHeight = 1024;
 
@@ -68,7 +69,6 @@ if (phantom.args.length < 1 || phantom.args.length > 2) {
   };
   page.onLoadFinished = function (status) {
     page.viewportSize = { width: WindowWidth, height: WindowHeight };
-    page.clipRect = { width: WindowWidth, height: WindowHeight };
     current_timeout = setTimeout(render_page_first_try, RenderDelayTimeout);
     console.log('Will render in ' + (RenderDelayTimeout / 1000) + ' secs');
   };

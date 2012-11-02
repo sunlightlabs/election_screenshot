@@ -108,7 +108,7 @@ def run_subprocess_safely(args, timeout=300, timeout_signal=9):
 def screenshot_url(url):
     now = datetime.datetime.now().isoformat()
     sha1 = hashlib.sha1(url).hexdigest()
-    filename = "{hash}-{timestamp}.png".format(hash=sha1, timestamp=now)
+    filename = "{hash}/{hash}_{timestamp}.png".format(hash=sha1, timestamp=now)
 
     with NamedTemporaryFile(mode='wb', prefix='twoops', suffix='.png', delete=True) as fil:
         cmd = ["phantomjs", "rasterize.js", url, fil.name]

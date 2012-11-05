@@ -1,14 +1,25 @@
 <!DOCTYPE html>
 
 <html>
+    <style type="text/css">
+        .fake-td { display: inline-block; text-align: }
+        .w400px { width: 400px; }
+        .w100px { width: 100px; }
+    </style>
 
     <body>
         <h1>{{ state }}</h1>
 
+        <div>
+            <span class="fake-td w400px">URL</span>
+            <span class="fake-td w100px">Screenshots</span>
+            <span class="fake-td w100px">Mirrors</span>
         <ul>
             {% for url in urls %}
             <li>
-                <a href="{% url url-details url.state url.url_sha1 %}">{{ url.url }}</a>
+                <a class="fake-td w400px" href="{% url url-details url.state url.url_sha1 %}">{{ url.url }}</a>
+                <span class="fake-td w100px">{{ url.screenshots.count }}</span>
+                <span class="fake-td w100px">{{ url.mirrors.count }}</span>
             </li>
             {% endfor %}
         </ul>

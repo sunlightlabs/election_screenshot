@@ -4,6 +4,7 @@ MySQL-python==1.2.4b5
 argparse==1.2.1
 boto==2.6.0
 distribute==0.6.30
+django-extensions==1.0.0
 django-form-utils==0.2.0
 ipython==0.13.1
 pytz==2012h

@@ -1,16 +1,13 @@
 import os
 import sys
-import time
-import threading
 import re
 import subprocess
-import pytz
-import hashlib
 from tempfile import NamedTemporaryFile
 
 import logbook
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
+from utils import run_subprocess_safely, ProcessTimeout
 
 from django.conf import settings
 
@@ -19,14 +16,6 @@ _script_ = (os.path.basename(__file__)
             if __name__ == "__main__"
             else __name__)
 log = logbook.Logger(_script_)
-
-
-class PhantomJSTimeout(Exception):
-    def __init__(self, cmd, process, stdout, stderr, *args, **kwargs):
-        msg = u"phantomjs timeout for pid {process.pid}; cmd: {cmd!r} stdout: {stdout!r}, stderr: {stderr!r}".format(process=process, cmd=cmd, stdout=stdout, stderr=stderr)
-        super(PhantomJSTimeout, self).__init__(msg, *args, **kwargs)
-        self.cmd = cmd
-        self.process = process
 
 
 def ensure_phantomjs_is_runnable():
@@ -62,67 +51,15 @@ def ensure_phantomjs_is_runnable():
     log.notice("Found phantomjs version {version}", version=match.group())
 
 
-def run_subprocess_safely(args, timeout=300, timeout_signal=9):
-    """
-    args: sequence of args, see Popen docs for shell=False
-    timeout: maximum runtime in seconds (fractional seconds allowed)
-    timeout_signal: signal to send to the process if timeout elapses
-    """
-    log.debug(u"Starting command: {0}", args)
-
-    process = subprocess.Popen(args=args,
-                               stdin=None,
-                               stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE)
-
-    deadline_timer = threading.Timer(timeout, process.send_signal, args=(timeout_signal,))
-    deadline_timer.start()
-
-    stdout = ""
-    stderr = ""
-    start_time = time.time()
-    elapsed = 0
-
-    # In practice process.communicate() never seems to return
-    # until the process exits but the documentation implies that
-    # it can because EOF can be reached before the process exits.
-    while not timeout or elapsed < timeout:
-        (stdout1, stderr1) = process.communicate()
-        if stdout1:
-            stdout += stdout1
-        if stderr1:
-            stderr += stderr1
-        elapsed = time.time() - start_time
-        if process.poll() is not None:
-            break
-
-    if elapsed >= timeout:
-        log.warning(u"Process failed to complete within {0} seconds. Return code: {1}", timeout, process.returncode)
-        raise PhantomJSTimeout(args, process, stdout, stderr)
-    else:
-        deadline_timer.cancel()
-        log.notice(u"Process completed in {0} seconds with return code {1}: {2} (stdout: {3!r}) (stderr: {4!r})", elapsed, process.returncode, args, stdout, stderr)
-        return (stdout, stderr)
-
-
-def screenshot_url(url):
-    local_timezone = pytz.timezone(settings.TIME_ZONE)
-    now = pytz.datetime.datetime.now(tz=local_timezone).isoformat()
-    sha1 = hashlib.sha1(url).hexdigest()
-    filename = "{hash}/{hash}_{timestamp}.png".format(hash=sha1, timestamp=now)
-
+def screenshot_url(url, callback):
     with NamedTemporaryFile(mode='wb', prefix='twoops', suffix='.png', delete=True) as fil:
         try:
             cmd = ["phantomjs", "rasterize.js", url, fil.name]
             (stdout, stderr) = run_subprocess_safely(cmd,
                                                      timeout=30,
                                                      timeout_signal=15)
-            with file(fil.name) as fil_ro:
-                bytes = fil_ro.read()
-                image_sha1 = hashlib.sha1(bytes).hexdigest()
-            new_url = upload_image(fil.name, filename, 'image/png')
-            return (image_sha1, new_url)
-        except PhantomJSTimeout as e:
+            return callback(fil.name)
+        except ProcessTimeout as e:
             log.warning(u"PhantomJS timed out on {0}: {1}".format(url, unicode(e)))
             return None
 

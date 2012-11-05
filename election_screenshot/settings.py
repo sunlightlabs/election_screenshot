@@ -1,3 +1,4 @@
+import datetime
 import random
 import os
 
@@ -126,8 +127,13 @@ INSTALLED_APPS = (
      'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
      'django.contrib.admindocs',
+    'django_extensions',
     'screenshotter',
 )
+
+MIRROR_ROOT = os.path.abspath(os.path.join(PROJECT_ROOT, '..', 'mirror'))
+MIRROR_WAIT = datetime.timedelta(seconds=300)
+MIRROR_BATCH_SIZE = 10
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

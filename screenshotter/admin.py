@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from screenshotter.models import ElectionUrl, ElectionScreenshot
+from screenshotter.models import ElectionUrl, ElectionScreenshot, ElectionMirror
 
 class ImageWidget(forms.widgets.HiddenInput):
     def render(self, name, value, attrs=None):
@@ -39,7 +39,10 @@ class ElectionScreenshotAdmin(admin.ModelAdmin):
     list_filter = ['election_url__state']
     form = ElectionScreenshotAdminForm
 
-
-
 admin.site.register(ElectionScreenshot, ElectionScreenshotAdmin)
+
+
+class ElectionMirrorAdmin(admin.ModelAdmin):
+    list_display = ('election_url', 'timestamp')
+admin.site.register(ElectionMirror, ElectionMirrorAdmin)
 

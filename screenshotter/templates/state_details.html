@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+
+<html>
+
+    <body>
+        <h1>{{ state }}</h1>
+
+        <ul>
+            {% for url in urls %}
+            <li>
+                <a href="{% url url-details url.state url.url_sha1 %}">{{ url.url }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </body>
+</html>
+

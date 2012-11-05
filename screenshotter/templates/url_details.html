@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+{% load relative_mirror_url %}
+
+<html>
+    <head>
+        <style type="text/css">
+            .clear { clear: both; }
+            .half-col { display: block; box-sizing: border-box; width: 50%; float: left; }
+        </style>
+    </head>
+    <body>
+        <h1>{{ state }}</h1>
+        <h2>{{ url.url }}</h2>
+
+        <div class="half-col">
+            <h3>Screenshots</h3>
+            <ul>
+                {% for screenshot in screenshots %}
+                <li>
+                    <a href="{{ screenshot.image_url }}">{{ screenshot.timestamp }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="half-col">
+            <h3>Mirrors</h3>
+            <ul>
+                {% for mirror in mirrors %}
+                <li>
+                    <a href="/static/{{ mirror|relative_mirror_url }}">{{ mirror.timestamp }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="clear"></div>
+    </body>
+</html>
+
+

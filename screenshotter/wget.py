@@ -2,6 +2,7 @@ import os
 import pytz
 from screenshotter.phantomjs import run_subprocess_safely
 from screenshotter.models import ElectionMirror
+from utils import abbrev_isoformat
 from django.conf import settings
 
 def copy_dir(fro, to):
@@ -20,7 +21,7 @@ def mirror_url(urlobj):
                                                    urlobj.url_sha1))
     if not os.path.exists(url_mirror_root):
         os.makedirs(url_mirror_root)
-    dest_dir = os.path.join(url_mirror_root, now.isoformat())
+    dest_dir = os.path.join(url_mirror_root, abbrev_isoformat(now))
     log_path = os.path.join(url_mirror_root, "wget.log")
 
     previous = urlobj.latest_mirror()

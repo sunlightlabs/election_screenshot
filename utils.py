@@ -95,3 +95,7 @@ def restart_process():
     """
     os.execl(sys.executable, sys.executable, *sys.argv)
 
+
+def abbrev_isoformat(dt):
+    return dt.strftime("%Y-%m-%dT%H:%M:%S%z")
+

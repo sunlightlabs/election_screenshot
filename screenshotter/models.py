@@ -1,7 +1,8 @@
-import pytz
 import hashlib
+import pytz
 from django.db import models
 from phantomjs import screenshot_url, upload_image
+from utils import abbrev_isoformat
 from django.conf import settings
 
 
@@ -44,7 +45,7 @@ class ElectionUrl(models.Model):
                     return (previous.image_sha1, previous.image_url)
                 else:
                     filename = "{hash}/{hash}_{timestamp}.png".format(hash=self.url_sha1,
-                                                                      timestamp=now.isoformat())
+                                                                      timestamp=abbrev_isoformat(now))
                     new_url = upload_image(tmpfile, filename, 'image/png')
                     if new_url is not None:
                         return None
@@ -72,3 +73,4 @@ class ElectionMirror(models.Model):
     election_url = models.ForeignKey(ElectionUrl, related_name='mirrors')
     timestamp = models.DateTimeField()
     dir = models.TextField()
+

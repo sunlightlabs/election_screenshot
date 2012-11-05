@@ -47,7 +47,7 @@ class ElectionUrl(models.Model):
                     filename = "{hash}/{hash}_{timestamp}.png".format(hash=self.url_sha1,
                                                                       timestamp=abbrev_isoformat(now))
                     new_url = upload_image(tmpfile, filename, 'image/png')
-                    if new_url is not None:
+                    if new_url is None:
                         return None
                     return (image_sha1, new_url)
 

@@ -54,11 +54,10 @@ class ElectionUrl(models.Model):
         screenshot_info = screenshot_url(self.url, upload_or_link)
         if screenshot_info is not None:
             (image_sha1, image_url) = screenshot_info
-            screenshot = ElectionScreenshot(election_url=self,
-                                            timestamp=now,
-                                            image_url=image_url,
-                                            image_sha1=image_sha1)
-            screenshot.save()
+            screenshot = ElectionScreenshot.objects.create(election_url=self,
+                                                           timestamp=now,
+                                                           image_url=image_url,
+                                                           image_sha1=image_sha1)
             return screenshot
         else:
             return None

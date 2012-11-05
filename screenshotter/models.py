@@ -41,7 +41,7 @@ class ElectionUrl(models.Model):
             with file(tmpfile) as fil_ro:
                 bytes = fil_ro.read()
                 image_sha1 = hashlib.sha1(bytes).hexdigest()
-                if previous.image_sha1 == image_sha1:
+                if previous and previous.image_sha1 == image_sha1:
                     return (previous.image_sha1, previous.image_url)
                 else:
                     filename = "{hash}/{hash}_{timestamp}.png".format(hash=self.url_sha1,

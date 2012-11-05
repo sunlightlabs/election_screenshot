@@ -29,7 +29,7 @@
             <ul>
                 {% for mirror in mirrors %}
                 <li>
-                    <a href="/static/{{ mirror|relative_mirror_url }}">{{ mirror.timestamp }}</a>
+                    <a href="/mirror/{{ mirror|relative_mirror_url }}">{{ mirror.timestamp }}</a>
                 </li>
                 {% endfor %}
             </ul>

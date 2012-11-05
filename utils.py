@@ -88,7 +88,7 @@ def configure_log_handler(application_name, loglevel, output):
     return log_handler
 
 
-def restart_process(signum, frame):
+def restart_process():
     """
     Replaces the current process with a new process invoked
     using the same command line.

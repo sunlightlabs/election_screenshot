@@ -16,8 +16,11 @@ def relative_mirror_url(mirror):
         fixedpath = "index.html"
     else:
         fixedpath = parsed.path.strip('/')
-    return '{state}/{sha1}/{timestamp}/{netloc}/{path}'.format(state=mirror.election_url.state,
+    path = '{state}/{sha1}/{timestamp}/{netloc}/{path}'.format(state=mirror.election_url.state,
                                                                sha1=mirror.election_url.url_sha1,
                                                                timestamp=timestamp,
                                                                netloc=parsed.netloc,
                                                                path=fixedpath)
+    if parsed.query:
+        path = path + '?' + parsed.query
+    return path

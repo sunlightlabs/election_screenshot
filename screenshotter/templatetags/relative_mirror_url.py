@@ -22,5 +22,5 @@ def relative_mirror_url(mirror):
                                                                netloc=parsed.netloc,
                                                                path=fixedpath)
     if parsed.query:
-        path = path + '?' + parsed.query
+        path = path + '%3F' + parsed.query
     return path

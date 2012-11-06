@@ -1,9 +1,17 @@
 import os
 import pytz
+import logbook
 from screenshotter.phantomjs import run_subprocess_safely
 from screenshotter.models import ElectionMirror
-from utils import abbrev_isoformat
+from utils import abbrev_isoformat, ProcessTimeout
 from django.conf import settings
+
+
+_script_ = (os.path.basename(__file__)
+            if __name__ == "__main__"
+            else __name__)
+log = logbook.Logger(_script_)
+
 
 def copy_dir(fro, to):
     args = ["cp",
@@ -46,11 +54,15 @@ def mirror_url(urlobj):
             "-P",
             dest_dir,
             urlobj.url]
-    (stdout, stderr) = run_subprocess_safely(args)
+    try:
+        (stdout, stderr) = run_subprocess_safely(args)
 
-    mirror = ElectionMirror.objects.create(election_url=urlobj,
-                                           timestamp=now,
-                                           dir=dest_dir)
-    return mirror
+        mirror = ElectionMirror.objects.create(election_url=urlobj,
+                                               timestamp=now,
+                                               dir=dest_dir)
+        return mirror
+    except ProcessTimeout as e:
+        log.error(u"wget failed to mirror url {url}: {e} {e_type}",
+                  url=urlobj.url, e=unicode(e), e_type=type(e))
 
 

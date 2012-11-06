@@ -41,10 +41,12 @@ class Command(BaseCommand):
                 now = pytz.datetime.datetime.now(tz=local_timezone)
                
                 urls = list(ElectionUrl.objects.filter(state__in=args))
-                def timestamp_or_none(urlobj):
+                def timestamp_as_unix_timestamp(urlobj):
                     mirror = urlobj.latest_mirror()
-                    return mirror.timestamp if mirror else None
-                urls.sort(key=timestamp_or_none)
+                    if mirror is None:
+                        return 0
+                    return time.mktime(mirror.timestamp.timetuple())
+                urls.sort(key=timestamp_as_unix_timestamp)
                
                 for url in urls:
                     previous = url.latest_mirror()

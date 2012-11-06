@@ -11,6 +11,10 @@ class ElectionUrl(models.Model):
     url = models.URLField(help_text="url to be screenshotted")
     url_sha1 = models.CharField(max_length=40, null=True, blank=True)
     state = models.CharField(max_length=2, help_text="Two char abbreviation for the state, AL e.g.")
+    user_agent = models.CharField(max_length=255,
+                                  null=True,
+                                  blank=True,
+                                  help_text="Value to send for the User-Agent header. Blank for the default.")
 
     def save(self, *args, **kwargs):
         self.url_sha1 = hashlib.sha1(self.url).hexdigest()

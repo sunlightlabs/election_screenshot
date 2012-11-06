@@ -30,6 +30,9 @@ def mirror_url(urlobj):
     elif not os.path.exists(dest_dir):
         os.makedirs(dest_dir)
 
+    user_agent_arg = ("--user-agent='{ua}'".format(ua=urlobj.user_agent)
+                      if urlobj.user_agent
+                      else "")
     args = ["wget",
             "--no-verbose",
             "-p",
@@ -37,6 +40,7 @@ def mirror_url(urlobj):
             "--wait=1",
             "-N",
             "--random-wait",
+            user_agent_arg,
             "-o",
             log_path,
             "-P",

@@ -1,3 +1,4 @@
+import os
 import datetime
 import time
 import logbook
@@ -6,6 +7,13 @@ from django.core.management.base import BaseCommand
 from screenshotter.models import ElectionUrl
 from screenshotter.phantomjs import ensure_phantomjs_is_runnable
 from utils import configure_log_handler, restart_process
+
+
+_script_ = (os.path.basename(__file__)
+            if __name__ == "__main__"
+            else __name__)
+log = logbook.Logger(_script_)
+
 
 class Command(BaseCommand):
     args = ''

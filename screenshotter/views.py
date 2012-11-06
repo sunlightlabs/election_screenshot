@@ -3,7 +3,7 @@ from screenshotter.models import ElectionUrl
 
 def state_index(request):
     state_groups = ElectionUrl.objects.values('state').distinct()
-    states = [grp['state'] for grp in state_groups]
+    states = sorted([grp['state'] for grp in state_groups])
     return render(request, "state_index.html", {
         'states': states
     })

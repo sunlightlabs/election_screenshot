@@ -7,7 +7,7 @@ from optparse import make_option
 from django.core.management.base import BaseCommand
 from screenshotter.models import ElectionUrl
 from screenshotter.wget import mirror_url
-from utils import configure_log_handler
+from utils import configure_log_handler, restart_process
 from django.conf import settings
 
 
@@ -29,6 +29,10 @@ class Command(BaseCommand):
                     action='store',
                     dest='output',
                     default='-'),
+        make_option('--forever',
+                    action='store_true',
+                    dest='forever',
+                    default=False),
     )
 
     def handle(self, *args, **options):
@@ -56,9 +60,11 @@ class Command(BaseCommand):
                         if since_last < settings.MIRROR_WAIT:
                             wait = math.floor((settings.MIRROR_WAIT - since_last).total_seconds())
                             log.notice("Waiting {0} seconds before mirroring again: {1}".format(
-                                url.url, wait))
+                                wait, url.url))
                             time.sleep(wait)
 
                     mirror_url(url)
 
+                if options['forever']:
+                    restart_process()
 

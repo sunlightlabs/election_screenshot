@@ -15,7 +15,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
      url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^$', 'screenshotter.views.status', name='index'),
+    url(r'^$', 'screenshotter.views.state_index', name='index'),
     url(r'^status/$', 'screenshotter.views.status', name='status'),
     url(r'^states/$', 'screenshotter.views.state_index', name='state-index'),
     url(r'^state/(?P<state>[a-zA-Z]{2})/$', 'screenshotter.views.state_details', name='state-details'),

@@ -10,3 +10,17 @@ h6 { font-size: 10px; }
 h2.url { font-size: 12px; }
 
 .no-overflow { overflow: hidden; }
+
+.sf-header {
+	background: url(/static/sfapp_bg_header.jpg) center bottom repeat-x;
+}
+.sf-header a.sf-logo {
+	background: url(/static/sfapp_logo.png) top right no-repeat;
+	display: block;
+	float: right;
+	height: 40px;
+	text-indent: -9999px;
+	width: 128px;
+    padding: 0;
+    margin: 6px;
+}

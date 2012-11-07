@@ -24,7 +24,7 @@
     </head>
 
     <body>
-        <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar navbar-fixed-top sf-header">
             <div class="navbar-inner">
                 <div class="container">
                     <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -34,18 +34,24 @@
                     </a>
                     <a class="brand" href="{% url index %}">Election Screenshots</a>
                     <div class="nav-collapse collapse">
-                        <ul class="nav">
-                            <li><a href="{% url state-index %}">State List</a></li>
-                            {% if state %}
-                            <li><a href="{% url state-details state %}">{{ state }}</a></li>
-                            {% endif %}
-                        </ul>
                     </div><!--/.nav-collapse -->
+                    <a class="brand sf-logo" href="http://www.sunlightfoundation.com"><img src="{{ STATIC_URL }}sfapp_logo.png"></a>
                 </div>
             </div>
         </div>
 
         <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="{% url state-index %}">State List</a></li>
+                {% if state %}
+                <li><span class="divider">/</span></li>
+                <li><a href="{% url state-details state %}">{{ state }}</a></li>
+                {% endif %}
+                {% if url %}
+                <li><span class="divider">/</span></li>
+                <li><a href="{{ url.url }}">{{ url.url }}</a></li>
+                {% endif %}
+            </ul>
             {% block content %}
             {% endblock content %}
         </div>

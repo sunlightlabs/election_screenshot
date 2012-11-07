@@ -11,6 +11,20 @@ h2.url { font-size: 12px; }
 
 .no-overflow { overflow: hidden; }
 
+a.brand {
+    display: inline-block;
+    vertical-align: bottom;
+    margin: 10px 0;
+}
+
+.share-buttons {
+    height: 40px;
+    padding-top: 20px;
+    float: right;
+    display: inline-block;
+    vertical-align: bottom;
+}
+
 .sf-header {
 	background: url(/static/sfapp_bg_header.jpg) center bottom repeat-x;
 }

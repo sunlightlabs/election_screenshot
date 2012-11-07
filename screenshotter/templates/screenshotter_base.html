@@ -11,8 +11,9 @@
         <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}bootstrap/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}styles.css">
 
-        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="{{ STATIC_URL }}jquery-latest.js"></script>
         <script src="{{ STATIC_URL }}bootstrap/js/bootstrap.js"></script>
+        <script src="http://assets.sunlightfoundation.com.s3.amazonaws.com/site/4.0/scripts/gigya.min.js"></script>
 
         <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
@@ -29,6 +30,12 @@
                 <div class="container">
                     <a class="brand" href="{% url index %}">Election Screenshots</a>
                     <a class="sf-logo" href="http://www.sunlightfoundation.com"><img src="{{ STATIC_URL }}sfapp_logo.png"></a>
+                    <span class="share-buttons"
+                        data-gigya="auto"
+                        data-services="twitter-tweet, facebook, reddit"
+                        data-options="linkBack=http%3A%2F%2Felectionshots.sunlightlabs.com&amp;title=The%20Sunlight%20Foundation's election night screenshot archive"
+                        data-twitter-tweet-options="defaultText=Check%20out%20Sunlight's%20election%20night%20screenshot%20archive!&amp;countURL=http%3A%2F%2Fwww.sunlightfoundation.com">
+                    </span>
                 </div>
             </div>
         </div>
@@ -48,6 +55,7 @@
             {% block content %}
             {% endblock content %}
         </div>
+
     </body>
 </html>
 

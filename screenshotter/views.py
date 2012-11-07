@@ -1,9 +1,21 @@
+from operator import itemgetter
 from django.shortcuts import render
+from django.db.models import Max
 from screenshotter.models import ElectionUrl, ElectionMirror, ElectionScreenshot
 
 def state_index(request):
     state_groups = ElectionUrl.objects.values('state').distinct()
-    states = sorted([grp['state'] for grp in state_groups])
+    state_lookup = dict(((grp['state'], grp) for grp in state_groups))
+    latest_screenshots = ElectionScreenshot.objects.values('election_url__state').annotate(timestamp=Max('timestamp'))
+    for screenshot in latest_screenshots:
+        state_lookup[screenshot['election_url__state']]['latest_screenshot'] = screenshot['timestamp']
+    latest_mirrors = ElectionMirror.objects.values('election_url__state').annotate(timestamp=Max('timestamp'))
+    for mirror in latest_mirrors:
+        state_lookup[mirror['election_url__state']]['latest_mirror'] = mirror['timestamp']
+    
+    states = list(state_lookup.items())
+    states.sort(key=itemgetter(0))
+
     return render(request, "state_index.html", {
         'states': states
     })

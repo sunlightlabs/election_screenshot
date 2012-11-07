@@ -1,12 +1,32 @@
 <!DOCTYPE html>
 
 <html>
+    <head>
+        <style type="text/css">
+            .fake-td { display: inline-block; text-align: }
+            .w400px { width: 400px; }
+            .w100px { width: 100px; }
+        </style>
+    </head>
 
     <body>
         <ul>
-            {% for state in states %}
             <li>
-                <a href="{% url state-details state %}">{{ state }}</a>
+                <span class="fake-td w100px"> State </span>
+                <span class="fake-td w400px"> Latest Screenshot </span>
+                <span class="fake-td w400px"> Latest Mirror </span>
+            </li>
+            {% for state, attrs in states %}
+            <li>
+                <span class="fake-td w100px">
+                    <a href="{% url state-details state %}">{{ state }}</a>
+                </span>
+                <span class="fake-td w400px">
+                    {{ attrs.latest_screenshot }}
+                </span>
+                <span class="fake-td w400px">
+                    {{ attrs.latest_mirror }}
+                </span>
             </li>
             {% endfor %}
         </ul>

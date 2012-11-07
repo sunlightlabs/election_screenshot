@@ -1,26 +1,18 @@
-<!DOCTYPE html>
+{% extends "screenshotter_base.html" %}
 
-<html>
-    <head>
-        <title>Status</title>
-
-        <meta charset="UTF-8" />
-        <meta http-equiv="Content-Language" content="en" />
-    </head>
-
-    <body>
+{% block content %}
         <h1>Status</h1>
 
-        <div class="clear">
-            <span class="fake-td w400px">Latest Screenshot</span>
-            <span class="fake-td w400px">{{ latest_screenshot.timestamp }}</span>
-        </div>
-
-        <div class="clear">
-            <span class="fake-td w400px">Latest Mirror</span>
-            <span class="fake-td w400px">{{ latest_mirror.timestamp }}</span>
-        </div>
-    </body>
-</html>
-
-
+        <table>
+            <tbody>
+                <tr>
+                    <th>Latest Screenshot</th>
+                    <td>{{ latest_screenshot.timestamp }}</td>
+                </tr>
+                <tr>
+                    <th>Latest Mirror</th>
+                    <td>{{ latest_mirror.timestamp }}</td>
+                </tr>
+            </tbody>
+        </table>
+{% endblock content %}

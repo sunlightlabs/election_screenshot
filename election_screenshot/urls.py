@@ -20,5 +20,6 @@ urlpatterns = patterns('',
     url(r'^states/$', 'screenshotter.views.state_index', name='state-index'),
     url(r'^state/(?P<state>[a-zA-Z]{2})/$', 'screenshotter.views.state_details', name='state-details'),
     url(r'^state/(?P<state>[a-zA-Z]{2})/(?P<sha1>[a-z0-9]{40})/$', 'screenshotter.views.url_details', name='url-details'),
+    url(r'^state/(?P<state>[a-zA-Z]{2})/(?P<sha1>[a-z0-9]{40})/collapsed/$', 'screenshotter.views.url_details', {'collapsed': True}, name='url-details-collapsed'),
 )
 

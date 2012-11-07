@@ -5,25 +5,25 @@
 {% endblock title %}
 
 {% block content %}
-        <h1>{{ state }}</h1>
+        <span class="span5">
+            <table id="url-list" class="table table-striped table-condensed table-hover">
+                <thead>
+                    <tr>
+                        <th>URL</th>
+                        <th>Screenshots</th>
+                        <th>Mirrors</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-        <table id="url-list">
-            <thead>
-                <tr>
-                    <th>URL</th>
-                    <th>Screenshots</th>
-                    <th>Mirrors</th>
-                </tr>
-            </thead>
-            <tbody>
-
-            {% for url in urls %}
-                <tr>
-                    <td> <a class="fake-td w400px" href="{% url url-details url.state url.url_sha1 %}">{{ url.url }}</a> </td>
-                    <td>{{ url.screenshots.count }}</td>
-                    <td>{{ url.mirrors.count }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                {% for url in urls %}
+                    <tr>
+                        <td> <a class="fake-td w400px" href="{% url url-details url.state url.url_sha1 %}">{{ url.url }}</a> </td>
+                        <td>{{ url.screenshots.count }}</td>
+                        <td>{{ url.mirrors.count }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </span>
 {% endblock content %}

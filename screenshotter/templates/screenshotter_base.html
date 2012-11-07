@@ -3,6 +3,8 @@
 <html lang="en">
     <head>
         <title>{% block title %}Election Screenshots{% endblock title %}</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="UTF-8" />
         <meta http-equiv="Content-Language" content="en" />
 
@@ -30,7 +32,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <a class="brand" href="#">Election Screenshots</a>
+                    <a class="brand" href="{% url index %}">Election Screenshots</a>
                     <div class="nav-collapse collapse">
                         <ul class="nav">
                             <li><a href="{% url state-index %}">State List</a></li>
@@ -44,8 +46,8 @@
         </div>
 
         <div class="container">
-        {% block content %}
-        {% endblock content %}
+            {% block content %}
+            {% endblock content %}
         </div>
     </body>
 </html>

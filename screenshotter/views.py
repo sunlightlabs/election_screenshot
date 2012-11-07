@@ -1,7 +1,17 @@
-from operator import itemgetter
+from operator import itemgetter, attrgetter
 from django.shortcuts import render
 from django.db.models import Max
 from screenshotter.models import ElectionUrl, ElectionMirror, ElectionScreenshot
+
+def grouped(xs, key):
+    groups = {}
+    key = key if callable(key) else itemgetter(key)
+    for x in xs:
+        k = key(x)
+        grp = groups.get(k, [])
+        grp.append(x)
+        groups[k] = grp
+    return groups.values()
 
 def state_index(request):
     state_groups = ElectionUrl.objects.values('state').distinct()
@@ -27,9 +37,16 @@ def state_details(request, state):
         'urls': urls
     })
 
-def url_details(request, state, sha1):
+def url_details(request, state, sha1, collapsed=False):
     url = ElectionUrl.objects.get(state=state, url_sha1=sha1)
     screenshots = url.screenshots.order_by('timestamp')
+    if collapsed:
+        screenshot_groups = grouped(screenshots, key=attrgetter('image_sha1'))
+        def yield_earliest():
+            for grp in screenshot_groups:
+                grp.sort(key=attrgetter('timestamp'), reverse=True)
+                yield grp[0]
+        screenshots = list(yield_earliest())
     mirrors = url.mirrors.order_by('timestamp')
 
     by_timestamp = {}
@@ -48,9 +65,9 @@ def url_details(request, state, sha1):
         'url': url,
         'screenshots': screenshots,
         'mirrors': mirrors,
-        'timeline': timeline
+        'timeline': timeline,
+        'collapsed': collapsed
     })
-
 
 def point_in_time(request, sha1, timestamp):
     pass

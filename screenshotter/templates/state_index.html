@@ -1,5 +1,9 @@
 {% extends "screenshotter_base.html" %}
 
+{% block breadcrumbs %}
+    <li><a href="{% url state-index %}">State List</a></li>
+{% endblock breadcrumbs %}
+
 {% block content %}
     <span class="span6">
         <table id="state-index" class="table table-striped table-condensed table-hover">

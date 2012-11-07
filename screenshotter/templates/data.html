@@ -1,8 +1,12 @@
 {% extends "screenshotter_base.html" %}
 
 {% block title %}
-    {{ state }}
+    Bulk Data
 {% endblock title %}
+
+{% block breadcrumbs %}
+    <li><a href="{% url state-index %}">Bulk Data</a></li>
+{% endblock breadcrumbs %}
 
 {% block content %}
         <span class="span9">

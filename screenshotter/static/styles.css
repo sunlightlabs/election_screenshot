@@ -16,6 +16,9 @@ a.brand {
     vertical-align: bottom;
     margin: 10px 0;
 }
+ul.nav li {
+    margin: 10px 0;
+}
 
 .share-buttons {
     height: 40px;

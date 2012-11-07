@@ -43,6 +43,10 @@
                 <div class="container">
                     <a class="brand" href="{% url index %}">Election Screenshots</a>
                     <a class="sf-logo" href="http://www.sunlightfoundation.com"><img src="{{ STATIC_URL }}sfapp_logo.png"></a>
+                    <ul class="nav">
+                        <li><a href="{% url state-index %}">State List</a></li>
+                        <li><a href="{% url data %}">Bulk Data</a></li>
+                    </ul>
                     <span class="share-buttons"
                         data-gigya="auto"
                         data-services="twitter-tweet, facebook, reddit"
@@ -55,15 +59,8 @@
 
         <div class="container">
             <ul class="breadcrumb">
-                <li><a href="{% url state-index %}">State List</a></li>
-                {% if state %}
-                <li><span class="divider">/</span></li>
-                <li><a href="{% url state-details state %}">{{ state }}</a></li>
-                {% endif %}
-                {% if url %}
-                <li><span class="divider">/</span></li>
-                <li><a href="{{ url.url }}">{{ url.url }}</a></li>
-                {% endif %}
+                {% block breadcrumbs %}
+                {% endblock breadcrumbs %}
             </ul>
             {% block content %}
             {% endblock content %}

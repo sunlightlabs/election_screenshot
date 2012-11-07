@@ -5,6 +5,14 @@
     {{ state }}: {{ url.url }}
 {% endblock title %}
 
+{% block breadcrumbs %}
+    <li><a href="{% url state-index %}">State List</a></li>
+    <li><span class="divider">/</span></li>
+    <li><a href="{% url state-details state %}">{{ state }}</a></li>
+    <li><span class="divider">/</span></li>
+    <li><a href="{{ url.url }}">{{ url.url }}</a></li>
+{% endblock breadcrumbs %}
+
 {% block content %}
         <span class="span6">
             {% if collapsed %}

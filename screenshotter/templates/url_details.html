@@ -8,7 +8,7 @@
 {% block content %}
         <h2 class="url"><a href="{{ url.url }}">{{ url.url }}</a></h2>
 
-        <span class="span5">
+        <span class="span6">
             {% if collapsed %}
             <a href="{% url url-details state url.url_sha1 %}">Expand duplicate screenshots</a>
             {% else %}

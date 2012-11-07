@@ -1,33 +1,29 @@
-<!DOCTYPE html>
+{% extends "screenshotter_base.html" %}
 
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="Content-Language" content="en" />
+{% block title %}
+    {{ state }}
+{% endblock title %}
 
-        <style type="text/css">
-            .fake-td { display: inline-block; text-align: }
-            .w400px { width: 400px; }
-            .w100px { width: 100px; }
-        </style>
-    </head>
-
-    <body>
+{% block content %}
         <h1>{{ state }}</h1>
 
-        <div>
-            <span class="fake-td w400px">URL</span>
-            <span class="fake-td w100px">Screenshots</span>
-            <span class="fake-td w100px">Mirrors</span>
-        <ul>
-            {% for url in urls %}
-            <li>
-                <a class="fake-td w400px" href="{% url url-details url.state url.url_sha1 %}">{{ url.url }}</a>
-                <span class="fake-td w100px">{{ url.screenshots.count }}</span>
-                <span class="fake-td w100px">{{ url.mirrors.count }}</span>
-            </li>
-            {% endfor %}
-        </ul>
-    </body>
-</html>
+        <table id="url-list">
+            <thead>
+                <tr>
+                    <th>URL</th>
+                    <th>Screenshots</th>
+                    <th>Mirrors</th>
+                </tr>
+            </thead>
+            <tbody>
 
+            {% for url in urls %}
+                <tr>
+                    <td> <a class="fake-td w400px" href="{% url url-details url.state url.url_sha1 %}">{{ url.url }}</a> </td>
+                    <td>{{ url.screenshots.count }}</td>
+                    <td>{{ url.mirrors.count }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+{% endblock content %}

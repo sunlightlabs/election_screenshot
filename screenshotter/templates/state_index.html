@@ -1,37 +1,22 @@
-<!DOCTYPE html>
+{% extends "screenshotter_base.html" %}
 
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="Content-Language" content="en" />
-
-        <style type="text/css">
-            .fake-td { display: inline-block; text-align: }
-            .w400px { width: 400px; }
-            .w100px { width: 100px; }
-        </style>
-    </head>
-
-    <body>
-        <ul>
-            <li>
-                <span class="fake-td w100px"> State </span>
-                <span class="fake-td w400px"> Latest Screenshot </span>
-                <span class="fake-td w400px"> Latest Mirror </span>
-            </li>
+{% block content %}
+        <table id="state-index">
+            <thead>
+                <tr>
+                    <th>State</th>
+                    <th>Latest Screenshot</th>
+                    <th>Latest Mirror</th>
+                </tr>
+            </thead>
+            <tbody>
             {% for state, attrs in states %}
-            <li>
-                <span class="fake-td w100px">
-                    <a href="{% url state-details state %}">{{ state }}</a>
-                </span>
-                <span class="fake-td w400px">
-                    {{ attrs.latest_screenshot }}
-                </span>
-                <span class="fake-td w400px">
-                    {{ attrs.latest_mirror }}
-                </span>
-            </li>
+                <tr>
+                    <td><a href="{% url state-details state %}">{{ state }}</a></td>
+                    <td> {{ attrs.latest_screenshot|date:"jS, h:i A" }} </td>
+                    <td> {{ attrs.latest_mirror|date:"jS, h:i A" }} </td>
+                </tr>
             {% endfor %}
-        </ul>
-    </body>
-</html>
+            </tbody>
+        </table>
+{% endblock content %}

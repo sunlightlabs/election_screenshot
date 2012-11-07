@@ -1,47 +1,38 @@
-<!DOCTYPE html>
-
+{% extends "screenshotter_base.html" %}
 {% load relative_mirror_url %}
 
-<html>
-    <head>
-        <title>{{ state }}</title>
+{% block title %}
+    {{ state }}: {{ url.url }}
+{% endblock title %}
 
-        <meta charset="UTF-8" />
-        <meta http-equiv="Content-Language" content="en" />
-
-        <style type="text/css">
-            .clear { clear: both; }
-            .half-col { display: block; box-sizing: border-box; width: 50%; float: left; }
-        </style>
-    </head>
-    <body>
+{% block content %}
         <h1>{{ state }}</h1>
-        <h2>{{ url.url }}</h2>
+        <h2 class="url"><a href="{{ url.url }}">{{ url.url }}</a></h2>
 
-        <div class="half-col">
-            <h3>Screenshots</h3>
-            <ul>
-                {% for screenshot in screenshots %}
-                <li>
-                    <a href="{{ screenshot.image_url }}">{{ screenshot.timestamp }}</a>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
+        <table id="url-list">
+            <thead>
+                <tr>
+                    <th>Screenshots</th>
+                    <th>Mirrors</th>
+                </tr>
+            </thead>
+            <tbody>
 
-        <div class="half-col">
-            <h3>Mirrors</h3>
-            <ul>
-                {% for mirror in mirrors %}
-                <li>
-                    <a href="/mirror/{{ mirror|relative_mirror_url }}">{{ mirror.timestamp }}</a>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
+            {% for timestamp, point_in_time in timeline %}
+                <tr>
+                    <td>
+                    {% if point_in_time.screenshot %}
+                    <a href="{{ point_in_time.screenshot.image_url }}">{{ point_in_time.screenshot.timestamp|date:"jS, h:i A" }}</a>
 
-        <div class="clear"></div>
-    </body>
-</html>
-
-
+                    {% endif %}
+                    </td>
+                    <td>
+                    {% if point_in_time.mirror %}
+                    <a href="/mirror/{{ point_in_time.mirror|relative_mirror_url }}">{{ point_in_time.mirror.timestamp|date:"jS h:i A" }}</a>
+                    {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+{% endblock content %}

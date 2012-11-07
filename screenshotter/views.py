@@ -31,11 +31,24 @@ def url_details(request, state, sha1):
     url = ElectionUrl.objects.get(state=state, url_sha1=sha1)
     screenshots = url.screenshots.order_by('timestamp')
     mirrors = url.mirrors.order_by('timestamp')
+
+    by_timestamp = {}
+    for screenshot in screenshots:
+        by_timestamp[screenshot.timestamp] = { 'screenshot': screenshot }
+    for mirror in mirrors:
+        obj = by_timestamp.get(mirror.timestamp, {})
+        obj['mirror'] = mirror
+        by_timestamp[mirror.timestamp] = obj
+
+    timeline = by_timestamp.items()
+    timeline.sort(key=itemgetter(0))
+
     return render(request, "url_details.html", {
         'state': state,
         'url': url,
         'screenshots': screenshots,
-        'mirrors': mirrors
+        'mirrors': mirrors,
+        'timeline': timeline
     })
 
 

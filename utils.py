@@ -4,6 +4,8 @@ import threading
 import os
 import subprocess
 import logbook
+import django.db
+
 
 _script_ = (os.path.basename(__file__)
             if __name__ == "__main__"
@@ -93,6 +95,13 @@ def restart_process():
     Replaces the current process with a new process invoked
     using the same command line.
     """
+    try:
+        django.db.close_connection()
+    except Exception as e:
+        log.warning("While trying to close database connection before restart: {e}", e=unicode(e))
+    except:
+        pass
+        
     os.execl(sys.executable, sys.executable, *sys.argv)
 
 

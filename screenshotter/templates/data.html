@@ -1,0 +1,78 @@
+{% extends "screenshotter_base.html" %}
+
+{% block title %}
+    {{ state }}
+{% endblock title %}
+
+{% block content %}
+        <span class="span9">
+            <p>
+            Below is a list of bulk data files, one per state ("ZZ" is for media sites not associated with a state). The screenshot archives look like this:
+            </p>
+
+            <pre class="filetree">
+            ZZ
+            ├── 27bca024b7eecc9e34c01eca58e9cfcd37bb2cee
+            │   ├── 27bca024b7eecc9e34c01eca58e9cfcd37bb2cee_2012-11-06T18:27:39-0500.png
+            │   ├── 27bca024b7eecc9e34c01eca58e9cfcd37bb2cee_2012-11-06T18:36:12-0500.png
+            │   ├── 27bca024b7eecc9e34c01eca58e9cfcd37bb2cee_2012-11-06T18:45:22-0500.png
+            ├── 3c6d2367efc9e514976d35becad2313961e50e20
+                ├── 3c6d2367efc9e514976d35becad2313961e50e20_2012-11-06T18:26:52-0500.png
+                ├── 3c6d2367efc9e514976d35becad2313961e50e20_2012-11-06T18:35:29-0500.png
+                ├── 3c6d2367efc9e514976d35becad2313961e50e20_2012-11-06T18:53:06-0500.png
+                ├── 3c6d2367efc9e514976d35becad2313961e50e20_2012-11-06T19:03:19-0500.png
+            </pre>
+
+            <p>
+            The big scary 40 character directory name and filename prefix is a hash of the url. It corresponds to the url on this website (e.g. <a href="http://electionshots.sunlightlabs.com/state/ZZ/27bca024b7eecc9e34c01eca58e9cfcd37bb2cee/">the link corresponding to the example above</a>).
+            </p>
+
+            <p>
+            The mirror archives look like this:
+            </p>
+
+            <pre class="filetree">
+            ZZ
+            ├── 27bca024b7eecc9e34c01eca58e9cfcd37bb2cee
+            │   ├── 2012-11-06T18:03:27-0500
+            │   │   └── www.politico.com
+            ...
+            │   ├── 2012-11-06T18:13:42-0500
+            │   │   └── www.politico.com
+            │   │       ├── 2012-election
+            ...
+            ├── 3c6d2367efc9e514976d35becad2313961e50e20
+            │   ├── 2012-11-06T17:59:55-0500
+            │   │   └── www.drudgereport.com
+            │   │       ├── i
+            │   │       │   └── logo9.gif
+            │   │       └── index.html
+            </pre>
+
+            <p>
+            The 40 character directory name is the same hash as in the screenshot archives. The directory below that is the timestamp the mirror was created.
+            </p>
+        </span>
+
+        <span class="span6">
+            <table id="archive-list" class="table table-striped table-condensed table-hover">
+                <thead>
+                    <tr>
+                        <th>Screenshots</th>
+                        <th>Mirrors</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                {% for state in states %}
+                    <tr>
+                        <td><a href="http://s3.amazonaws.com/election_screenshots/screenshot_archives/{{ state }}.tar.gz">{{ state }}</a></td>
+                        <td><a href="http://s3.amazonaws.com/election_screenshots/mirror_archives/{{ state }}.tar.gz">{{ state }}</a></td>
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </span>
+{% endblock content %}
+

@@ -69,8 +69,12 @@ def url_details(request, state, sha1, collapsed=False):
         'collapsed': collapsed
     })
 
-def point_in_time(request, sha1, timestamp):
-    pass
+def data(request):
+    states = [grp['state'] for grp in ElectionUrl.objects.values('state').distinct()]
+    states.sort()
+    return render(request, "data.html", {
+        'states': states
+    })
 
 def status(request):
     mirrors = ElectionMirror.objects.order_by('-timestamp')

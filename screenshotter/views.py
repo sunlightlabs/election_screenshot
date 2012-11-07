@@ -31,8 +31,8 @@ def point_in_time(request, sha1, timestamp):
     pass
 
 def status(request):
-    mirrors = ElectionMirror.objects.filter('-timestamp')
-    screenshots = ElectionScreenshot.objects.filter('-timestamp')
+    mirrors = ElectionMirror.objects.order_by('-timestamp')
+    screenshots = ElectionScreenshot.objects.order_by('-timestamp')
 
     latest_mirror = None if mirrors.count() == 0 else mirrors[0]
     latest_screenshot = None if screenshots.count() == 0 else screenshots[0]

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from screenshotter.models import ElectionUrl
+from screenshotter.models import ElectionUrl, ElectionMirror, ElectionScreenshot
 
 def state_index(request):
     state_groups = ElectionUrl.objects.values('state').distinct()
@@ -29,3 +29,15 @@ def url_details(request, state, sha1):
 
 def point_in_time(request, sha1, timestamp):
     pass
+
+def status(request):
+    mirrors = ElectionMirror.objects.filter('-timestamp')
+    screenshots = ElectionScreenshot.objects.filter('-timestamp')
+
+    latest_mirror = None if mirrors.count() == 0 else mirrors[0]
+    latest_screenshot = None if screenshots.count() == 0 else screenshots[0]
+
+    return render(request, 'status.html', {
+        'latest_mirror': latest_mirror,
+        'latest_screenshot': latest_screenshot
+    })

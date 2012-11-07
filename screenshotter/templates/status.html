@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html>
+    <title>Status</title>
+    <style type="text/css">
+        .fake-td { display: inline-block; text-align: }
+        .w400px { width: 400px; }
+        .w100px { width: 100px; }
+    </style>
+
+    <body>
+        <h1>Status</h1>
+
+        <div class="clear">
+            <span class="fake-td w400px">Latest Screenshot</span>
+            <span class="fake-td w400px">{{ latest_screenshot.timestamp }}</span>
+        </div>
+
+        <div class="clear">
+            <span class="fake-td w400px">Latest Mirror</span>
+            <span class="fake-td w400px">{{ latest_mirror.timestamp }}</span>
+        </div>
+    </body>
+</html>
+
+
